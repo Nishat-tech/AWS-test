@@ -23,7 +23,8 @@ jobs:
             # Pull the latest code
             git pull origin backend
 
-            
+            # Go into the backend sub-folder
+            cd backend
 
             # Install dependencies and restart the app
             npm install --production
