@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [email, setEmail] = useState("");
@@ -6,7 +7,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   const handleLogin = async () => {
-    const response = await fetch("http://localhost:5000/api/login", {
+    const response = await fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
