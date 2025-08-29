@@ -3,27 +3,29 @@ name: Deploy Backend to EC2
 on:
   push:
     branches:
-      - backend   # jab backend branch par push hoga tab deploy chalega
+      - backend
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.0
+        # Using a more recent version
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/backend || git clone https://github.com/Nishat-tech/AWS-test.git /home/ubuntu/backend
-            cd /home/ubuntu/backend
-            git fetch --all
-            git reset --hard origin/backend
+            # Go to the main repository folder
+            cd ~/AWS-test
+
+            # Pull the latest code
+            git pull origin backend
+
+            # Go into the backend sub-folder
+            cd backend
+
+            # Install dependencies and restart the app
             npm install --production
-            pm2 stop server || true
-            pm2 start server.js --name backend
+            pm2 restart server.js
