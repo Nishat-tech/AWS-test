@@ -1,8 +1,10 @@
 name: Backend CI/CD
+
 on:
   push:
     branches:
       - backend
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,4 +13,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: cd backend && npm install && npm start
+      
+      # This step now only installs dependencies and runs tests.
+      # If you don't have tests, you can remove "&& npm test"
+      - name: Install Dependencies and Run Tests
+        run: cd backend && npm install && npm test
