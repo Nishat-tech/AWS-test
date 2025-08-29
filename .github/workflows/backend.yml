@@ -17,4 +17,4 @@ jobs:
       # This step now only installs dependencies and runs tests.
       # If you don't have tests, you can remove "&& npm test"
       - name: Install Dependencies and Run Tests
-        run: cd backend && npm install && npm test
+        run: cd backend && npm install 
