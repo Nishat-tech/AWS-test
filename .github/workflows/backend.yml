@@ -1,20 +1,29 @@
-name: Backend CI/CD
+name: Deploy Backend to EC2
 
 on:
   push:
     branches:
-      - backend
+      - backend   # jab backend branch par push hoga tab deploy chalega
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          node-version: '18'
-      
-      # This step now only installs dependencies and runs tests.
-      # If you don't have tests, you can remove "&& npm test"
-      - name: Install Dependencies and Run Tests
-        run: cd backend && npm install 
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd /home/ubuntu/backend || git clone https://github.com/Nishat-tech/AWS-test.git /home/ubuntu/backend
+            cd /home/ubuntu/backend
+            git fetch --all
+            git reset --hard origin/backend
+            npm install --production
+            pm2 stop server || true
+            pm2 start server.js --name backend
