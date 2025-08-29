@@ -18,14 +18,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             # Go to the main repository folder
-            cd ~/backend
+            cd ~/backend/backend
 
-            # Pull the latest code
-            git pull origin backend
-
-            # Go into the backend sub-folder
-            cd backend
-
-            # Install dependencies and restart the app
             npm install --production
-            pm2 restart server.js
+            pm2 reload backend-app || pm2 start server.js --name backend-app
