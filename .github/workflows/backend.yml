@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             # Go to the main repository folder
-            cd ~/LOGIN-DEMO
+            cd ~/backend
 
             # Pull the latest code
             git pull origin backend
